@@ -4,11 +4,19 @@ class Heap:
         self.lista = []  # dichiarata la lista che conterrà tutti i valori di heap
         self.heapSize = 0
 
+    def add(self, valore):
+        self.lista.append(valore)
+        self.heapSize += 1
+
+    def swap(self, fpos, spos):
+
+        self.lista[fpos], self.lista[spos] = (self.lista[spos], self.lista[fpos])
+
     def inserisci_elemento(self, valore):
 
         self.lista.append(valore)
         self.heapSize += 1
-        self.build_max_heap()
+        self.max_heapify(self.heapSize - 1)
         '''  def heapify_up(self, i):   posso usare questo metodo al posto di build max heap
         while i > 0:
             genitore = self.parent(i)
@@ -31,21 +39,16 @@ class Heap:
 
         return i // 2
 
-    def max_heapify(self, i):  # i è il valore della radix attuale a cui stiamo applicando la nostra funzione
+    def max_heapify(self, index):  # i è il valore della radix attuale a cui stiamo applicando la nostra funzione
 
-        l = self.left(i)
-        r = self.right(i)
-        massimo = i
-
-        if l < self.heapSize and self.lista[l] > self.lista[i]:
-            massimo = l
-
-        if r < self.heapSize and self.lista[r] > self.lista[massimo]:
-            massimo = r
-
-        if massimo != i:
-            self.lista[i], self.lista[massimo] = self.lista[massimo], self.lista[i]
-            self.max_heapify(massimo)
+        while index > 0:
+            parent_index = (index - 1) // 2
+            if self.lista[index] > self.lista[parent_index]:
+                # Swap the current element with its parent
+                self.lista[index], self.lista[parent_index] = self.lista[parent_index], self.lista[index]
+                index = parent_index
+            else:
+                break
 
     def build_max_heap(self):
 
@@ -73,7 +76,7 @@ class Heap:
 
     def cerca_rango(self, valore):
 
-        for i in range(1, self.heapSize + 1): #il rango partendo da 1 facciamo cosi e non da 0
+        for i in range(1, self.heapSize + 1):  # il rango partendo da 1 facciamo cosi e non da 0
             if self.lista[i] == valore:
                 return i  # Rango trovato
 
@@ -89,4 +92,4 @@ class Heap:
             # Sostituisci l'elemento da rimuovere con l'ultimo elemento
             self.lista[indice] = self.lista[self.heapSize - 1]
             self.heapSize -= 1
-            self.max_heapify(indice) #sufficiente max_heapify poichè aggiusto solo il sottoalbero
+            self.max_heapify(indice)  # sufficiente max_heapify poichè aggiusto solo il sottoalbero
