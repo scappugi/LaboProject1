@@ -19,14 +19,14 @@ import Listaconcatenataordinata
 def valuesRandomListConc(valMax):
     # Creo lista con i valori randomici
     valori = ListaConcatenata()
-    '''for k in range(valMax):
+    for k in range(valMax):
         #  valori.aggiungi_elemento(Nodo(random.randint(0, valMax)))
-        valori.aggiungi_elemento(random.randint(0, valMax))'''
+        valori.aggiungi_elemento(random.randint(0, valMax))
     return valori
 
 
 
-def testLista(dimMax, numRipet):
+def testAddLista2(dimMax, numRipet):
     tempi_inserimento = []  # Lista per memorizzare i tempi di inserimento
     for i in range(1, dimMax, 10):
         tempo_inserimento_medio = 0
@@ -53,10 +53,58 @@ def testLista(dimMax, numRipet):
     plt.grid(True)
     plt.show()
 
+def testAddLista1(dimMax, numRipet):
+    tempi_inserimento = []  # Lista per memorizzare i tempi di inserimento
+    for i in range(1, dimMax, 10):  # Modifica l'incremento a 1
+        lista = valuesRandomListConc(i)
+        tempi = timeit.repeat(lambda: lista.aggiungi_elemento(random.randint(0, i)), number=numRipet, repeat=1)
+        tempo_medio = np.mean(tempi)
+        tempi_inserimento.append(tempo_medio)
 
+    asse_x = [i for i in range(1, dimMax, 10)]
+    plt.plot(asse_x, tempi_inserimento, label="insert ", color="orange")
+    plt.xlabel('Numero elementi')
+    plt.ylabel('Tempo di Inserimento (secondi)')
+    plt.title('Tempo di Inserimento in Lista Concatenata')
+    plt.grid(True)
+    plt.show()
 
+def testRicercaMaxLista(dimMax, numRipet):
+    tempi_inserimento = []
+    for i in range(1, dimMax, 1):
+        lista = valuesRandomListConc(valMax=i)
+        tempi = timeit.repeat(lambda: lista.trova_massimo(), number=numRipet, repeat=1)
+        tempo_medio = np.mean(tempi)
+        tempi_inserimento.append(tempo_medio)
+
+    asse_x = [i for i in range(1, dimMax, 1)]
+    plt.plot(asse_x, tempi_inserimento, label="insert ", color="blue")
+    plt.xlabel('Numero elementi')
+    plt.ylabel('Tempo di ricerca max (secondi)')
+    plt.title('Tempo di Inserimento in Lista Concatenata')
+    plt.grid(True)
+    plt.show()
+
+def testAggiornaElementoLista(dimMax, numRipet):
+    tempi_inserimento = []
+    for i in range(1, dimMax, 1):
+        lista = valuesRandomListConc(valMax=i)
+        tempi = timeit.repeat(lambda: lista.aggiorna_elemento(random.randint(0, i),random.randint(0, i)), number=numRipet, repeat=1)
+        tempo_medio = np.mean(tempi)
+        tempi_inserimento.append(tempo_medio)
+
+    asse_x = [i for i in range(1, dimMax, 1)]
+    plt.plot(asse_x, tempi_inserimento, label="insert ", color="blue")
+    plt.xlabel('Numero elementi')
+    plt.ylabel('Tempo di ricerca max (secondi)')
+    plt.title('Tempo di Inserimento in Lista Concatenata')
+    plt.grid(True)
+    plt.show()
 
 # Esegui il test con i valori desiderati
 print("ciao")
-testLista(dimMax=10000, numRipet=10000)
+#testAddLista1(dimMax=10000, numRipet=500)
+#testRicercaMaxLista(dimMax=10000,numRipet=10)
+testAggiornaElementoLista(dimMax=100, numRipet=10)
+
 print("ciao")

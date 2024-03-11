@@ -60,18 +60,21 @@ class ListaConcatenata:
 
         return -1  # se l' elemento non esiste nella lista alloraa torna con -1
 
-    def aggiorna_elemento(self, vecchioValore, nuovoValore):
+    def aggiorna_elemento(self, posizione, nuovoValore): #la posizione specifica la posizione dove effettuare l' aggiornamento
         # devo comuque scorrere tutta la lista poichè non cè
         # modo di sapere a priori quanti elementi vi sono al suo interno
 
         corrente = self.testa
 
-        while corrente:
-            if corrente.valore == vecchioValore:
-                corrente.valore = nuovoValore
-                return True  # elemento trovato e modificato
-
-            corrente = corrente.successivo  # iteratore
+        for i in range(1, posizione, 1):
+            if i == posizione-1:
+                if corrente:
+                    corrente.valore = nuovoValore
+                    return True  # elemento trovato e modificato
+                else:
+                    return False
+            if corrente:
+                corrente = corrente.successivo  # iteratore
 
         return False  # Elemento non trovato
 
