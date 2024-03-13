@@ -69,7 +69,7 @@ class Heap:
     def heap_maximum(self):
 
         if self.heapSize >= 1:
-            return self.lista[1]
+            return self.lista[0] #ritorna il primo elemento della lista
 
         else:
             return None  # Restituisci None se l'heap è vuoto
@@ -91,5 +91,6 @@ class Heap:
         if 0 <= indice < self.heapSize:
             # Sostituisci l'elemento da rimuovere con l'ultimo elemento
             self.lista[indice] = self.lista[self.heapSize - 1]
+            self.lista.remove(self.lista[self.heapSize - 1])
             self.heapSize -= 1
-            self.max_heapify(indice)  # sufficiente max_heapify poichè aggiusto solo il sottoalbero
+            self.max_heapify(indice-1)  # sufficiente max_heapify poichè aggiusto solo il sottoalbero

@@ -8,25 +8,21 @@ class ListaConcatenataOrdinata:  # la lista è ordinata dal valore maggiore al v
     def __init__(self):
         self.testa = None
 
-    def aggiungi_elemento(self, nuovo_valore):
+    def aggiungi_elemento_o(self, nuovo_valore):
         nuovo_nodo = Nodo(nuovo_valore)
 
-        # Caso in cui la lista è vuota o il nuovo valore è maggiore del valore in testa
-        if not self.testa or nuovo_valore > self.testa.valore:
+        if self.testa is None or nuovo_valore > self.testa.valore:
             nuovo_nodo.successivo = self.testa
             self.testa = nuovo_nodo
             return
 
-        # Trova il nodo precedente all'inserto
-        precedente = None
         corrente = self.testa
-        while corrente and corrente.valore < nuovo_valore:
-            precedente = corrente
+        while corrente.successivo is not None and corrente.successivo.valore > nuovo_valore:
             corrente = corrente.successivo
 
-        # Inserisci il nuovo nodo tra il nodo precedente e il nodo corrente
-        nuovo_nodo.successivo = corrente
-        precedente.successivo = nuovo_nodo
+        # Collega il nuovo nodo al nodo successivo del nodo trovato e il nodo trovato al nuovo nodo
+        nuovo_nodo.successivo = corrente.successivo
+        corrente.successivo = nuovo_nodo
 
     def trova_massimo(self):
         if not self.testa:

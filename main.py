@@ -8,13 +8,15 @@ import matplotlib.pyplot as plt
 
 matplotlib.use('TkAgg')
 import random
-from Listaconcatenata import Nodo
 from Listaconcatenata import ListaConcatenata
 import Heap
-import Listaconcatenataordinata
+from Listaconcatenataordinata import ListaConcatenataOrdinata
+
+'''
+       CREO STRUTTURE DINAMICHE
+'''
 
 
-# servono per creare struttre dinamiche
 def valuesRandomListConc(dimensione):
     # Creo lista con i valori randomici
     valori = ListaConcatenata()
@@ -28,10 +30,22 @@ def valuesRandomHeap(dimensione):  # crea un heap dinamico con n elementi random
     heap = Heap.Heap()
     for k in range(dimensione):
         # heap.inserisci_elemento(random.randint(0, 100))
-        heap.add(random.randint(0, 100))
+        heap.add(random.randint(0, 100))  # inserisce senza aggiustare
 
     heap.build_max_heap()
     return heap
+
+
+def valuesRandomListaO(dimensione):
+    valori = ListaConcatenataOrdinata()
+    for k in range(dimensione):
+        valori.aggiungi_elemento_o(random.randint(0, dimensione))
+    return valori
+
+
+'''
+        TEST PER LISTA CONCATENATA
+'''
 
 
 def testAddLista2(dimMax, numRipet):
@@ -64,13 +78,13 @@ def testAddLista2(dimMax, numRipet):
 
 def testAddLista1(dimMax, numRipet):
     tempi_inserimento = []  # Lista per memorizzare i tempi di inserimento
-    for i in range(1, dimMax, 100):  # Modifica l'incremento a 1
+    for i in range(1, dimMax, 5):  # Modifica l'incremento a 1
         lista = valuesRandomListConc(i)
         tempi = timeit.repeat(lambda: lista.aggiungi_elemento(random.randint(0, i)), number=numRipet, repeat=10)
         tempo_medio = np.mean(tempi)
         tempi_inserimento.append(tempo_medio)
 
-    asse_x = [i for i in range(1, dimMax, 100)]
+    asse_x = [i for i in range(1, dimMax, 5)]
     plt.plot(asse_x, tempi_inserimento, label="insert ", color="orange")
     plt.xlabel('Numero elementi')
     plt.ylabel('Tempo di Inserimento (secondi)')
@@ -114,17 +128,22 @@ def testAggiornaElementoLista(dimMax, numRipet):
     plt.show()
 
 
+'''
+        TEST PER HEAP
+'''
+
+
 def testaddHeap(dimMax, numRipet):
     tempi_inserimento = []
-    for i in range(1, dimMax, 50):
+    for i in range(1, dimMax, 100):
         heap = valuesRandomHeap(i)
         tempi = timeit.repeat(lambda: heap.inserisci_elemento(random.randint(0, i)), number=numRipet,
-                              repeat=10)  # questo temp dovrebbe essere logaritmico
+                              repeat=1)  # questo temp dovrebbe essere logaritmico
 
         tempo_medio = np.mean(tempi)
         tempi_inserimento.append(tempo_medio)
 
-    asse_x = [i for i in range(1, dimMax, 50)]
+    asse_x = [i for i in range(1, dimMax, 100)]
     plt.plot(asse_x, tempi_inserimento, label="insert ", color="blue")
     # plt.semilogy(asse_x, tempi_inserimento, label="insert ", color="blue")
     plt.xlabel('Numero elementi')
@@ -178,18 +197,74 @@ def testMaxheapifyHeap(dimMax, numRipet):
     plt.show()
 
 
+def testFindMaxHeap(dimMax, numRipet):
+    tempi_inserimento = []
+    for i in range(1, dimMax, 5):
+        heap = Heap.Heap()
+        for j in range(i):
+            heap.add(random.randint(0, i))
+        tempi = timeit.repeat(lambda: heap.heap_maximum(), number=numRipet, repeat=10)
+        tempo_medio = np.mean(tempi)
+        tempi_inserimento.append(tempo_medio)
+
+    asse_x = [i for i in range(1, dimMax, 5)]
+    plt.plot(asse_x, tempi_inserimento, label="insert ", color="green")
+    plt.xlabel('Numero elementi')
+    plt.ylabel('Tempo (secondi)')
+    plt.title('Tempo di esecuzione heap maximum')
+    plt.grid(True)
+    plt.show()
+
+
+'''
+        TEST PER LISTA CONCATENATA ORDINATA
+'''
+
+def testAddListaO(dimMax, numRipet):
+    tempi_inserimento = []  # Lista per memorizzare i tempi di inserimento
+    for i in range(1, dimMax, 100):  # Modifica l'incremento a 1
+        lista = valuesRandomListaO(dimensione=i)
+        tempi = timeit.repeat(lambda: lista.aggiungi_elemento_o(random.randint(0, i)), number=numRipet, repeat=1)
+        tempo_medio = np.mean(tempi)
+        tempi_inserimento.append(tempo_medio)
+
+    asse_x = [i for i in range(1, dimMax, 100)]
+    plt.plot(asse_x, tempi_inserimento, label="insert ", color="orange")
+    plt.xlabel('Numero elementi')
+    plt.ylabel('Tempo di Inserimento (secondi)')
+    plt.title('Tempo di Inserimento in Lista Concatenata Ordinata')
+    plt.grid(True)
+    plt.show()
+
+
+
+
+
+
 # Esegui il test con i valori desiderati
 print("ciao")
-testAddLista1(dimMax=20000, numRipet=1000)
-# testRicercaMaxLista(dimMax=10000, numRipet=1000) #ok
+# testAddLista1(dimMax=2000, numRipet=1000)
+# testRicercaMaxLista(dimMax=5000, numRipet=1000)  # ok
 # testAggiornaElementoLista(dimMax=100, numRipet=10)
 # testAddHeap2(dimMax=10000, numRipet=5000)
 # testMaxheapifyHeap(10000,50000)
+# testFindMaxHeap(2000, 1000)
+testAddListaO(dimMax=2000, numRipet=1000)
 print("ciao")
+
+
+
+
+
 max_heap = Heap.Heap()
 max_heap.inserisci_elemento(4)
 max_heap.inserisci_elemento(10)
 max_heap.inserisci_elemento(8)
 max_heap.inserisci_elemento(5)
+max_heap.inserisci_elemento(7)
+max_heap.inserisci_elemento(14)
+max_heap.inserisci_elemento(22)
+max_heap.inserisci_elemento(4)
+max_heap.rimuovi_elemento(3)
 
 print(max_heap.lista)
