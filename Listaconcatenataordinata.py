@@ -10,7 +10,6 @@ class ListaConcatenataOrdinata:  # la lista è ordinata dal valore maggiore al v
 
     def aggiungi_elemento_o(self, nuovo_valore):
         nuovo_nodo = Nodo(nuovo_valore)
-
         if self.testa is None or nuovo_valore > self.testa.valore:
             nuovo_nodo.successivo = self.testa
             self.testa = nuovo_nodo
@@ -20,7 +19,6 @@ class ListaConcatenataOrdinata:  # la lista è ordinata dal valore maggiore al v
         while corrente.successivo is not None and corrente.successivo.valore > nuovo_valore:
             corrente = corrente.successivo
 
-        # Collega il nuovo nodo al nodo successivo del nodo trovato e il nodo trovato al nuovo nodo
         nuovo_nodo.successivo = corrente.successivo
         corrente.successivo = nuovo_nodo
 
