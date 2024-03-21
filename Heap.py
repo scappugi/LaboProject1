@@ -13,7 +13,6 @@ class Heap:
         self.lista[fpos], self.lista[spos] = (self.lista[spos], self.lista[fpos])
 
     def inserisci_elemento(self, valore):
-
         self.lista.append(valore)
         self.heapSize += 1
         self.max_heapify_up(self.heapSize - 1)
@@ -30,13 +29,16 @@ class Heap:
 
         return i // 2
 
-    def max_heapify_up(self, index):  # i è il valore della radix attuale a cui stiamo applicando la nostra funzione
-
+    def max_heapify_up(self, index):
         while index > 0:
             parent_index = (index - 1) // 2
-            if self.lista[index] > self.lista[parent_index]:
-                # Swap the current element with its parent
-                self.lista[index], self.lista[parent_index] = self.lista[parent_index], self.lista[index]
+
+            v1 = self.lista[index]
+            v2 = self.lista[parent_index]
+
+            if v1 > v2:
+                self.lista[index] = v2
+                self.lista[parent_index] = v1
                 index = parent_index
             else:
                 break
@@ -84,7 +86,7 @@ class Heap:
 
     def cerca_rango(self, valore):
 
-        for i in range(1, self.heapSize + 1):  # il rango partendo da 1 facciamo cosi e non da 0
+        for i in range(0, self.heapSize - 1):
             if self.lista[i] == valore:
                 return i  # Rango trovato
 
@@ -100,5 +102,11 @@ class Heap:
             # Sostituisci l'elemento da rimuovere con l'ultimo elemento
             self.lista[indice] = self.lista[self.heapSize - 1]
             self.lista.remove(self.lista[self.heapSize - 1])
+
             self.heapSize -= 1
-            self.max_heapify(indice - 1)  # sufficiente max_heapify poichè aggiusto solo il sottoalbero
+            self.max_heapify(indice)  # sufficiente max_heapify poichè aggiusto solo il sottoalbero
+
+    def rimuovi_elemento_per_valore(self, valore):
+        indice = self.cerca_rango(valore)  # Trova l'indice dell'elemento da eliminare
+        if indice != -1:
+            self.rimuovi_elemento(indice)  # Chiama il metodo per rimuovere l'elemento per indice
